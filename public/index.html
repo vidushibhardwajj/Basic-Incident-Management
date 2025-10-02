@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Basix Incident System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <div class="container">
+    <h1>Basic Incident System</h1>
+    <form id="incidentForm" class="mb-4">
+      <div class="mb-2">
+        <label class="form-label">Title</label>
+        <input id="title" class="form-control" required />
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Description</label>
+        <textarea id="description" class="form-control" rows="3" required></textarea>
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Severity</label>
+        <select id="severity" class="form-select">
+          <option>low</option>
+          <option selected>medium</option>
+          <option>high</option>
+          <option>critical</option>
+        </select>
+      </div>
+      <button class="btn btn-primary">Create Incident</button>
+    </form>
+
+    <h3>Incidents</h3>
+    <table class="table" id="incTable">
+      <thead><tr><th>ID</th><th>Title</th><th>Category</th><th>Priority</th><th>Status</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+<script>
+async function fetchIncidents() {
+  const res = await fetch('/incidents');
+  const list = await res.json();
+  const tbody = document.querySelector('#incTable tbody');
+  tbody.innerHTML = '';
+  for (const inc of list) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${inc.id}</td><td>${inc.title}</td><td>${inc.category}</td><td>${inc.priority}</td><td>${inc.status}</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+document.getElementById('incidentForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const title = document.getElementById('title').value;
+  const description = document.getElementById('description').value;
+  const severity = document.getElementById('severity').value;
+  await fetch('/incident', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({title,description,severity})
+  });
+  document.getElementById('title').value=''; document.getElementById('description').value='';
+  fetchIncidents();
+});
+
+fetchIncidents();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "basix-incident-system",
+  "version": "0.1.0",
+  "description": "Minimal incident system with automated incident categorization & prioritization (rule-based).",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "init-db": "node db.js --init"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "nodemailer": "^6.10.1",
+    "sqlite3": "^5.1.6"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "author": "",
+  "license": "MIT"
+}

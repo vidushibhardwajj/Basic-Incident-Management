@@ -1,0 +1,68 @@
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e3e7ed 100%);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+h1 {
+  color: #2c3e50;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 8px #e3e7ed;
+}
+
+.container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(44,62,80,0.08);
+  padding: 2rem 2.5rem;
+  margin-top: 2rem;
+}
+
+.form-label {
+  color: #34495e;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%);
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(52,152,219,0.15);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #6dd5fa 0%, #2980b9 100%);
+}
+
+.table {
+  background: #f8fafc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+}
+
+.table th {
+  background: #2980b9;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+}
+
+.table td {
+  border: none;
+  color: #34495e;
+}
+
+select.form-select, input.form-control, textarea.form-control {
+  border-radius: 8px;
+  border: 1px solid #dfe6e9;
+  background: #f8fafc;
+  transition: border-color 0.2s;
+}
+
+select.form-select:focus, input.form-control:focus, textarea.form-control:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 0 2px #6dd5fa33;
+}
