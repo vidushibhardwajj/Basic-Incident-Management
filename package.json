@@ -10,13 +10,24 @@
   "dependencies": {
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "nodemailer": "^6.10.1",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "twilio": "^5.10.3"
   },
   "engines": {
     "node": ">=14"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supriya13-wq/Basic-Incident-Management.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/supriya13-wq/Basic-Incident-Management/issues"
+  },
+  "homepage": "https://github.com/supriya13-wq/Basic-Incident-Management#readme"
 }
