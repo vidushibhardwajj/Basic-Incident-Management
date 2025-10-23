@@ -31,6 +31,12 @@ A minimal incident-management system aimed at small teams and projects. This "ba
 - `POST /incident/:id/status`
   - Body: `{ status }` where status is one of `Open`, `Acknowledged`, `Resolved`.
 
+# API Endpoints
+- **POST /incident**: Creates a new incident (fields: title, priority, etc.)
+  - auth required: `x-api-key` header
+- **GET /incidents**: Lists all incidents
+  - auth required
+
 ## How the automation works
 
 The current implementation uses a **rule-based classifier** (`classifier.js`) that:

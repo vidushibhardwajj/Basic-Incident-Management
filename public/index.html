@@ -57,7 +57,10 @@ document.getElementById('incidentForm').addEventListener('submit', async e=>{
   const severity = document.getElementById('severity').value;
   await fetch('/incident', {
     method: 'POST',
-    headers: {'Content-Type':'application/json'},
+    headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': 'yoursecretkeyhere' 
+   },
     body: JSON.stringify({title,description,severity})
   });
   document.getElementById('title').value=''; document.getElementById('description').value='';
