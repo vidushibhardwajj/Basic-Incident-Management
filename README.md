@@ -1,4 +1,4 @@
-# Basix Incident System (with Automated Categorization & Prioritization)
+# Basic Incident System (with Automated Categorization & Prioritization)
 
 A minimal incident-management system aimed at small teams and projects. This "basix" repository includes:
 
