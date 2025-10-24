@@ -4,7 +4,7 @@ const cors = require('cors');
 const db = require('./db');
 const classifier = require('./classifier');
 const nodemailer = require('nodemailer');
-const { body, validationResult } = require('express-validator');
+const { sendSMS } = require('./sendSMS');
 
 const app = express();
 require('dotenv').config();
@@ -54,13 +54,18 @@ app.post('/incident',
     if (!errors.isEmpty())
       return res.status(400).json({ errors: errors.array() });
   try {
-    const { title, description, severity, metadata } = req.body;
+    // DEBUG: log incoming request body to verify phone is received
+    console.log('POST /incident body:', req.body);
+
+    const { title, description, severity, metadata, phone } = req.body;
     if (!title || !description) return res.status(400).json({error: 'title and description required'});
 
-    // Run classifier (category & priority)
+    if (phone && !/^\+\d{7,15}$/.test(phone)) {
+      return res.status(400).json({ error: 'phone must be in E.164 format (e.g. +15551234567)' });
+    }
+
     const result = classifier.categorizeAndPrioritize({title, description, severity, metadata});
 
-    // Save to DB
     const incident = {
       title,
       description,
@@ -69,11 +74,13 @@ app.post('/incident',
       priority: result.priority,
       status: 'Open',
       metadata: JSON.stringify(metadata || {}),
+      phone: phone || null,
       created_at: new Date().toISOString()
     };
-    const id = await db.createIncident(incident);
 
-    // Send email (if configured). This will silently fail if not configured.
+    const id = await db.createIncident(incident);
+    console.log('Inserted incident id:', id, 'phone:', incident.phone);
+
     if (process.env.SMTP_USER && process.env.SMTP_PASS) {
       const mailOptions = {
         from: process.env.EMAIL_FROM || process.env.SMTP_USER,
@@ -84,7 +91,19 @@ app.post('/incident',
       transporter.sendMail(mailOptions).catch(err => console.error('Mail send error:', err));
     }
 
+    if (phone) {
+  sendSMS({
+    to: phone,
+    body: 'Hey there, your issue has been recorded on our incident management dashboard. We are working on creating a smoother experience for you. Thank you'
+  })
+    .then(r => console.log(`SMS sent to ${phone}`, r && r.sid ? r.sid : ''))
+    .catch(err => console.error('SMS send failed:', err && err.message ? err.message : err));
+}
+
+
     const saved = await db.getIncidentById(id);
+    // DEBUG: log fetched DB row to ensure phone persisted
+    console.log('Saved record from DB:', saved);
     return res.status(201).json(saved);
   } catch (err) {
     console.error(err);
@@ -106,3 +125,8 @@ app.post('/incident/:id/status', async (req, res) => {
   res.json(inc);
 });
 
+app.listen(PORT, async () => {
+  console.log('Server running on port', PORT);
+  await db.init();
+  console.log('DB initialized (incidents.db)');
+});
